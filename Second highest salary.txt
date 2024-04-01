@@ -1,0 +1,26 @@
+Second highest salary
+
+create table salaries(
+	id int primary key,
+	salary int 
+	)
+	
+	
+	insert into salaries( id,salary)
+	values 
+	(1,2000),
+	(2,3000),
+	(3,4000)
+		
+		
+	select max(salary) as secondhighestsalary from salaries
+	where salary <(Select max(salary) from salaries)
+	
+	with cte as(
+	select salary,
+	dense_rank() over(order by salary desc) as dr
+	from salaries
+	)
+	select salary as secondhighestsalary from cte
+	where dr=2
+	
