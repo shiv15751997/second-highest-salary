@@ -1,0 +1,27 @@
+###leetcode consecutive numbers question
+
+
+solution one by joins
+seletc distinct (L1.num) as consecutive_numbers from logs L1
+left join logs L2 on L1.id=L2.id+1
+left join logs L3 on L1.id=L3.id+2
+where L1.num=L2.num and L2.num=L3.num
+
+
+second solution by lag and lead
+
+with cte as (
+select num,
+lag(num)over(order by id) as previous_num
+lead(num)over(order by id) as next_num
+lag(num)over(order by id) as previous_num2
+lead(num)over(order by id) as next_num2
+from logs
+)
+select num from cte
+where (num=previous_num and num=next_num)
+or (num=previous_num and num=previous_num2)
+or (num=next_num and num=next_num2)
+order by num;
+
+
